@@ -1,0 +1,16 @@
+[
+  {
+    "artifact": "frcJava (in project code-from-2020)",
+    "target": "roborio",
+    "debugfile": "frcJava_roborio.debugconfig",
+    "project": "code-from-2020",
+    "language": "java"
+  },
+  {
+    "artifact": "frcJava (in project rhfweiohfe)",
+    "target": "roborio",
+    "debugfile": "frcJava_roborio.debugconfig",
+    "project": "rhfweiohfe",
+    "language": "java"
+  }
+]

@@ -30,24 +30,22 @@ public class Systems
     }
 
 
-    public void driveSenpai (WPI_TalonSRX rMaster, WPI_TalonSRX lMaster, WPI_TalonSRX rSlave, WPI_TalonSRX lSlave, XboxController teemo, boolean inverse) {
+    public void driveTeleop(WPI_TalonSRX rMaster, WPI_TalonSRX lMaster, WPI_TalonSRX rSlave, WPI_TalonSRX lSlave, XboxController teemo, boolean inverse) {
 
         double invert = 1;
-        if (inverse = true){
+        if (inverse = true)
             invert = invert*-1;
-        }else if (inverse = false){
-            invert = invert*1;
-        }
-        Double speedFam = teemo.getRawAxis(1); 
-        Double turnPop = teemo.getRawAxis(4);
 
-        Double left = speedFam + turnPop;
-        Double right = speedFam - turnPop;
+        Double speed = teemo.getRawAxis(1); 
+        Double turn = teemo.getRawAxis(4);
+       //teemo is the xbox thing, remember :)
+        Double left = speed + turn;
+        Double right = speed - turn;
        
         lMaster.set(left*invert);
         lSlave.set(left*invert);
-        rMaster.set(-right);
-        rSlave.set(-right);
+        rMaster.set(right*invert);
+        rSlave.set(right*invert);
 
 
 
@@ -68,8 +66,8 @@ public class Systems
         }
         else
         {
-            leftoutSpark.set(0);
-            rightoutSpark.set(0);
+            leftoutSpark.stopMotor();
+            rightoutSpark.stopMotor();
         }
 
       //  spin();

@@ -308,24 +308,28 @@ public class Robot extends TimedRobot {
       lMaster.set(.5);
     }
     */
-    if(m_buttonboard.getRawButton(2) == true){
+   /* if(m_buttonboard.getRawButton(2) == true){
       lMaster.setSelectedSensorPosition(0);
       double n = lMaster.getSelectedSensorPosition();
       while (n < 1000){
         lMaster.set(.5);
       }
     }
+    */
+
+    
     rdIndicator = m_buttonboard.getRawButton(1);
     if(rdIndicator == true)
     {
-      chachaslide = -1;
-      m_drive.arcadeDrive((m_drivecont.getRawAxis(0)*.5*chachaslide),( -m_drivecont.getRawAxis(1)*.5*chachaslide));
-      systems.driveSenpai(rMaster, lMaster, rSlave, lSlave, m_drivecont,true); 
+      //chachaslide = -1;
+      //m_drive.arcadeDrive((m_drivecont.getRawAxis(0)*.5*chachaslide),( -m_drivecont.getRawAxis(1)*.5*chachaslide));
+      systems.driveTeleop(rMaster, lMaster, rSlave, lSlave, m_drivecont,true); 
     }
     else
     {
-      chachaslide = 1;
-      m_drive.arcadeDrive((m_drivecont.getRawAxis(0)*.5*chachaslide),( -m_drivecont.getRawAxis(1)*.5*chachaslide));
+      //chachaslide = 1;
+      //m_drive.arcadeDrive((m_drivecont.getRawAxis(0)*.5*chachaslide),( -m_drivecont.getRawAxis(1)*.5*chachaslide));
+      systems.driveTeleop(rMaster, lMaster, rSlave, lSlave, m_drivecont,false);
     }
 
     systems.activate(m_buttonboard, lBallSpark, rBallSpark);

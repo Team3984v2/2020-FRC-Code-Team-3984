@@ -320,7 +320,7 @@ public class Robot extends TimedRobot {
     {
       chachaslide = -1;
       m_drive.arcadeDrive((m_drivecont.getRawAxis(0)*.5*chachaslide),( -m_drivecont.getRawAxis(1)*.5*chachaslide));
-      systems.driveSenpai(rMaster, lMaster, rSlave, lSlave, m_drivecont); 
+      systems.driveSenpai(rMaster, lMaster, rSlave, lSlave, m_drivecont,true); 
     }
     else
     {

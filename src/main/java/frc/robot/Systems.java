@@ -1,5 +1,6 @@
 package frc.robot;
 
+import com.ctre.phoenix.motorcontrol.NeutralMode;
 import com.ctre.phoenix.motorcontrol.can.WPI_TalonSRX;
 
 import edu.wpi.first.wpilibj.Joystick;
@@ -23,8 +24,45 @@ public class Systems
     /**
      * InnerSystems
      */
-    public class InnerSystems {
+    static class InnerSystems {
     
+        public void configTalon(WPI_TalonSRX lMaster, WPI_TalonSRX rMaster,WPI_TalonSRX lSlave,WPI_TalonSRX rSlave){
+            lMaster.configFactoryDefault();
+            lSlave.configFactoryDefault();
+            rMaster.configFactoryDefault();
+            rSlave.configFactoryDefault();
+            
+            lMaster.configNominalOutputForward(0, 30);
+            lMaster.configNominalOutputReverse(0, 30);
+            lMaster.configPeakOutputForward(1, 30);
+            lMaster.configPeakOutputReverse(-1, 30);
+            lMaster.setNeutralMode(NeutralMode.Brake);
+        
+                
+            lSlave.configNominalOutputForward(0, 30);
+            lSlave.configNominalOutputReverse(0, 30);
+            lSlave.configPeakOutputForward(1, 30);
+            lSlave.configPeakOutputReverse(-1, 30);
+            lSlave.setNeutralMode(NeutralMode.Brake);
+        
+                
+            rMaster.configNominalOutputForward(0, 30);
+            rMaster.configNominalOutputReverse(0, 30);
+            rMaster.configPeakOutputForward(1, 30);
+            rMaster.configPeakOutputReverse(-1, 30);
+            rMaster.setNeutralMode(NeutralMode.Brake);
+        
+                
+            rSlave.configNominalOutputForward(0, 30);
+            rSlave.configNominalOutputReverse(0, 30);
+            rSlave.configPeakOutputForward(1, 30);
+            rSlave.configPeakOutputReverse(-1, 30);
+            rSlave.setNeutralMode(NeutralMode.Brake);
+        }
+
+
+
+
         
         
     }
@@ -43,9 +81,9 @@ public class Systems
         Double right = speed - turn;
        
         lMaster.set(left*invert);
-        lSlave.set(left*invert);
+       // lSlave.set(left*invert);
         rMaster.set(right*invert);
-        rSlave.set(right*invert);
+       // rSlave.set(right*invert);
 
 
 

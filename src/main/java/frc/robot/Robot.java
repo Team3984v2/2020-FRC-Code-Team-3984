@@ -49,14 +49,13 @@ public class Robot extends TimedRobot {
 
 
   Timer timer = new Timer();
-  /**
-   * This function is run when the robot is first started up and should be
-   * used for any initialization code.
-   */
-  //You are doing great! :D 
-  //Hello 
 
+  
+  //Setting up classes:
   public static Systems systems = new Systems();
+  public static Systems.InnerSystems innerSystems = new Systems.InnerSystems();
+
+
   //public static Systems ballIntake = new Systems();
   
    //variables and constants
@@ -125,43 +124,9 @@ public class Robot extends TimedRobot {
     m_chooser.addOption("Default Auto", kDefaultAuto);
     m_chooser.addOption("My Auto", kCustomAuto);
     //SmartDashboard.putData("Auto choices", m_chooser);
-    //
-    lMaster.configFactoryDefault();
-    lSlave.configFactoryDefault();
-    rMaster.configFactoryDefault();
-    rSlave.configFactoryDefault();
-    
-    lMaster.configNominalOutputForward(0, 30);
-		lMaster.configNominalOutputReverse(0, 30);
-		lMaster.configPeakOutputForward(1, 30);
-    lMaster.configPeakOutputReverse(-1, 30);
-    lMaster.setNeutralMode(NeutralMode.Brake);
-
-        
-    lSlave.configNominalOutputForward(0, 30);
-		lSlave.configNominalOutputReverse(0, 30);
-		lSlave.configPeakOutputForward(1, 30);
-    lSlave.configPeakOutputReverse(-1, 30);
-    lSlave.setNeutralMode(NeutralMode.Brake);
-
-        
-    rMaster.configNominalOutputForward(0, 30);
-		rMaster.configNominalOutputReverse(0, 30);
-		rMaster.configPeakOutputForward(1, 30);
-    rMaster.configPeakOutputReverse(-1, 30);
-    rMaster.setNeutralMode(NeutralMode.Brake);
-
-        
-    rSlave.configNominalOutputForward(0, 30);
-		rSlave.configNominalOutputReverse(0, 30);
-		rSlave.configPeakOutputForward(1, 30);
-    rSlave.configPeakOutputReverse(-1, 30);
-    rSlave.setNeutralMode(NeutralMode.Brake);
-
-
-
-
-
+  
+   //Config Talons
+    innerSystems.configTalon(lMaster, rMaster, lSlave, rSlave);
     lSlave.follow(lMaster);
     rSlave.follow(rMaster);
 

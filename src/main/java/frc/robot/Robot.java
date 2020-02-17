@@ -123,7 +123,7 @@ public class Robot extends TimedRobot {
     m_chooser.setDefaultOption("Option 1:", kOption1);
     m_chooser.addOption("Default Auto", kDefaultAuto);
     m_chooser.addOption("My Auto", kCustomAuto);
-    //SmartDashboard.putData("Auto choices", m_chooser);
+    SmartDashboard.putData("Auto choices", m_chooser);
   
    //Config Talons
     innerSystems.configTalon(lMaster, rMaster, lSlave, rSlave);
@@ -233,28 +233,23 @@ public class Robot extends TimedRobot {
   @Override
   public void autonomousPeriodic() {
 
-    //lMaster.getFaults(faults);
+ 
     switch (m_autoSelected) 
     {
       case kCustomAuto:
         // Put custom auto code here
         break;
       case kDefaultAuto:
+
+        break;
+      case kOption1:
+       
+        break;
       default:
         // Put default auto code her
 
 
-        
-        /*    if(m_encoder.getDistance() < 5) 
-            {
-              m_drive.tankDrive(.5, .5);
-            } 
-            else 
-            {
-              m_drive.tankDrive(0, 0);
-            }
-        break;
-        */
+
           }
     }
 
@@ -265,35 +260,17 @@ public class Robot extends TimedRobot {
   public void teleopPeriodic() {
 
 
+    //the color of the wheel; B = 1; G = 2; R = 3; Y = 4; none = 0;
+    int gameColor = innerSystems.gameData_Color();
     lMaster.getFaults(faults);
-    /*
-    double n = lMaster.getSelectedSensorPosition();
-    lMaster.setSelectedSensorPosition(0);
-    while (n < 800){
-      lMaster.set(.5);
-    }
-    */
-   /* if(m_buttonboard.getRawButton(2) == true){
-      lMaster.setSelectedSensorPosition(0);
-      double n = lMaster.getSelectedSensorPosition();
-      while (n < 1000){
-        lMaster.set(.5);
-      }
-    }
-    */
 
-    
     rdIndicator = m_buttonboard.getRawButton(1);
     if(rdIndicator == true)
     {
-      //chachaslide = -1;
-      //m_drive.arcadeDrive((m_drivecont.getRawAxis(0)*.5*chachaslide),( -m_drivecont.getRawAxis(1)*.5*chachaslide));
       systems.driveTeleop(rMaster, lMaster, rSlave, lSlave, m_drivecont,true); 
     }
     else
     {
-      //chachaslide = 1;
-      //m_drive.arcadeDrive((m_drivecont.getRawAxis(0)*.5*chachaslide),( -m_drivecont.getRawAxis(1)*.5*chachaslide));
       systems.driveTeleop(rMaster, lMaster, rSlave, lSlave, m_drivecont,false);
     }
 

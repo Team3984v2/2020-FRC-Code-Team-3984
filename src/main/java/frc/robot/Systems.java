@@ -2,6 +2,7 @@ package frc.robot;
 
 import com.ctre.phoenix.motorcontrol.NeutralMode;
 import com.ctre.phoenix.motorcontrol.can.WPI_TalonSRX;
+import edu.wpi.first.wpilibj.DriverStation;
 
 import edu.wpi.first.wpilibj.Joystick;
 import edu.wpi.first.wpilibj.Spark;
@@ -60,7 +61,29 @@ public class Systems
             rSlave.setNeutralMode(NeutralMode.Brake);
         }
 
-
+        public int gameData_Color(){
+            String gameData = DriverStation.getInstance().getGameSpecificMessage();
+            int a;
+            if(gameData.length() > 0){
+                if(gameData.charAt(0) == 'B'){
+                    a = 1;
+                }
+                else if(gameData.charAt(0) == 'G'){
+                    a = 2;
+                }
+                else if(gameData.charAt(0) == 'R'){
+                    a = 3;
+                }
+                else if(gameData.charAt(0) == 'Y'){
+                    a = 4;
+                }else{
+                    a = 0;
+                }
+            }else{
+                a = 0;
+            }
+            return a;
+        }
 
 
         

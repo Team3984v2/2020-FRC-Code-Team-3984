@@ -11,7 +11,6 @@ import java.util.Timer;
 
 import com.ctre.phoenix.motorcontrol.Faults;
 import com.ctre.phoenix.motorcontrol.FeedbackDevice;
-import com.ctre.phoenix.motorcontrol.NeutralMode;
 import com.ctre.phoenix.motorcontrol.can.WPI_TalonSRX;
 import com.revrobotics.ColorMatch;
 import com.revrobotics.ColorMatchResult;
@@ -22,6 +21,7 @@ import edu.wpi.cscore.VideoMode;
 import edu.wpi.first.cameraserver.CameraServer;
 import edu.wpi.first.wpilibj.I2C;
 import edu.wpi.first.wpilibj.Joystick;
+import edu.wpi.first.wpilibj.Solenoid;
 import edu.wpi.first.wpilibj.Spark;
 import edu.wpi.first.wpilibj.TimedRobot;
 import edu.wpi.first.wpilibj.XboxController;
@@ -59,15 +59,16 @@ public class Robot extends TimedRobot {
   //public static Systems ballIntake = new Systems();
   
    //variables and constants
-   private final I2C.Port i2cPort = I2C.Port.kOnboard;
+   final I2C.Port i2cPort = I2C.Port.kOnboard;
    private boolean rdIndicator = false;
-   private double chachaslide = -1;
+   //private double chachaslide = -1;
+
 
 
    //private int ball_counter = 0;   
 
   //OI
-  private final XboxController m_drivecont = new XboxController(0);
+  private final XboxController m_drivexbcont = new XboxController(0);
   private final Joystick m_buttonboard = new Joystick(1);
 
   private final Faults faults = new Faults();
@@ -77,7 +78,7 @@ public class Robot extends TimedRobot {
   private final WPI_TalonSRX lSlave = new WPI_TalonSRX(2);
   private final WPI_TalonSRX rMaster = new WPI_TalonSRX(10);
   private final WPI_TalonSRX rSlave = new WPI_TalonSRX(3);
-  private final DifferentialDrive m_drive = new DifferentialDrive(lMaster, rMaster);
+  //private final DifferentialDrive m_drive = new DifferentialDrive(lMaster, rMaster);
 
   //cannon intake motors
   private final Spark lBallSpark = new Spark(0);
@@ -89,8 +90,20 @@ public class Robot extends TimedRobot {
   //color wheel motor
   private final Spark cwSpark = new Spark(3);
 
+  //color strings
+  private String gameData;
+  private String obcolorString;
+  private static Systems.ColorSys cSys = new Systems.ColorSys();
+
   //DigitalInput ball sensor = new DigitalInput(0); 
   // private final Faults _faults = new Faults();
+
+  //solenoids
+  private final int klSole = 0;
+  private final int krSole = 1;
+  private final Solenoid lSole = new Solenoid(klSole);
+  private final Solenoid rSole = new Solenoid(krSole);
+  
   
   
 //Yay
@@ -107,7 +120,7 @@ public class Robot extends TimedRobot {
   private final Color kGreenTarget = ColorMatch.makeColor(0.197, 0.561, 0.240);
   private final Color kRedTarget = ColorMatch.makeColor(0.561, 0.232, 0.114);
   private final Color kYellowTarget = ColorMatch.makeColor(0.361, 0.524, 0.113);
-
+  //trying to do the suggested integer part...
 
 
 
@@ -183,11 +196,11 @@ public class Robot extends TimedRobot {
     SmartDashboard.putString("Detected Color", colorString);
 
     //read RGB values
-    double IR = m_colorSensor.getIR();
+    //double IR = m_colorSensor.getIR();
     SmartDashboard.putNumber("Red", detectedColor.red);
     SmartDashboard.putNumber("Green", detectedColor.green);
     SmartDashboard.putNumber("Blue", detectedColor.blue);
-    SmartDashboard.putNumber("IR", IR);
+    //SmartDashboard.putNumber("IR", IR);
 
     //encoder values
     SmartDashboard.putNumber("left Vel:", lMaster.getSelectedSensorVelocity());
@@ -267,14 +280,26 @@ public class Robot extends TimedRobot {
     rdIndicator = m_buttonboard.getRawButton(1);
     if(rdIndicator == true)
     {
-      systems.driveTeleop(rMaster, lMaster, rSlave, lSlave, m_drivecont,true); 
+      systems.driveTeleop(rMaster, lMaster, rSlave, lSlave, m_drivexbcont,true); 
     }
     else
     {
-      systems.driveTeleop(rMaster, lMaster, rSlave, lSlave, m_drivecont,false);
+      systems.driveTeleop(rMaster, lMaster, rSlave, lSlave, m_drivexbcont,false);
     }
 
     systems.activate(m_buttonboard, lBallSpark, rBallSpark);
+    systems.solenoidsOut(lSole, rSole, m_buttonboard);
+
+    
+    {
+      systems.driveTeleop(rMaster, lMaster, rSlave, lSlave, m_drivexbcont,false);
+    }
+
+    systems.activate(m_buttonboard, lBallSpark, rBallSpark);
+    systems.solenoidsOut(lSole, rSole, m_buttonboard);
+    systems.intake(intakeSpark, m_buttonboard);
+
+    
   }
     
   @Override
@@ -285,3 +310,6 @@ public class Robot extends TimedRobot {
     
   }
 }
+
+
+

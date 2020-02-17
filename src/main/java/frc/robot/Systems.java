@@ -2,10 +2,13 @@ package frc.robot;
 
 import com.ctre.phoenix.motorcontrol.NeutralMode;
 import com.ctre.phoenix.motorcontrol.can.WPI_TalonSRX;
-import edu.wpi.first.wpilibj.DriverStation;
+import com.revrobotics.ColorSensorV3;
 
+import edu.wpi.first.wpilibj.DriverStation;
 import edu.wpi.first.wpilibj.Joystick;
+import edu.wpi.first.wpilibj.Solenoid;
 import edu.wpi.first.wpilibj.Spark;
+import edu.wpi.first.wpilibj.SpeedController;
 import edu.wpi.first.wpilibj.XboxController;
 
 public class Systems
@@ -60,7 +63,7 @@ public class Systems
             rSlave.configPeakOutputReverse(-1, 30);
             rSlave.setNeutralMode(NeutralMode.Brake);
         }
-
+        //used to get the color from the game
         public int gameData_Color(){
             String gameData = DriverStation.getInstance().getGameSpecificMessage();
             int a;
@@ -90,7 +93,7 @@ public class Systems
         
     }
 
-
+    //used to drive the robot
     public void driveTeleop(WPI_TalonSRX rMaster, WPI_TalonSRX lMaster, WPI_TalonSRX rSlave, WPI_TalonSRX lSlave, XboxController teemo, boolean inverse) {
 
         double invert = 1;
@@ -118,6 +121,7 @@ public class Systems
 
     }
 
+    //used to turn on the cannon
     public void activate(Joystick joystick, Spark leftoutSpark, Spark rightoutSpark)
     {
         if(joystick.getRawButtonPressed(1) == true)
@@ -134,5 +138,40 @@ public class Systems
       //  spin();
 
        
+    }
+
+    static class ColorSys
+    {
+        public void colorStop(ColorSensorV3 cV3, String gdString)
+        {
+            
+        }
+    }
+    //used to tilt the solenoids up
+    public void solenoidsOut(Solenoid sole, Solenoid sole2, Joystick controller)
+    {
+        if(controller.getRawButtonPressed(8) == true)
+        {
+                sole.set(true);
+        }
+        
+        else
+        {                
+            sole.set(false);
+            sole2.set(false);
+        }
+    }
+
+    //to turn the intake for the cannon
+    public void intake(SpeedController beltController, Joystick joystick)
+    {
+        if(joystick.getRawButtonPressed(4) == true)
+        {
+            beltController.set(1);
+        }
+        else
+        {
+            beltController.set(0);
+        }
     }
 }

@@ -1,15 +1,20 @@
 package frc.robot;
 
+import java.util.Timer;
+import java.util.TimerTask;
+
 import com.ctre.phoenix.motorcontrol.NeutralMode;
 import com.ctre.phoenix.motorcontrol.can.WPI_TalonSRX;
 import com.revrobotics.ColorSensorV3;
 
 import edu.wpi.first.wpilibj.DriverStation;
+import edu.wpi.first.wpilibj.GenericHID.Hand;
 import edu.wpi.first.wpilibj.Joystick;
 import edu.wpi.first.wpilibj.Solenoid;
 import edu.wpi.first.wpilibj.Spark;
 import edu.wpi.first.wpilibj.SpeedController;
 import edu.wpi.first.wpilibj.XboxController;
+import edu.wpi.first.wpilibj.util.Color;
 
 public class Systems
 {
@@ -100,8 +105,8 @@ public class Systems
         if (inverse = true)
             invert = invert*-1;
 
-        Double speed = teemo.getRawAxis(1); 
-        Double turn = teemo.getRawAxis(4);
+        Double speed = teemo.getY(Hand.kLeft); 
+        Double turn = teemo.getX(Hand.kRight);
        //teemo is the xbox thing, remember :)
         Double left = speed + turn;
         Double right = speed - turn;
@@ -142,6 +147,16 @@ public class Systems
 
     static class ColorSys
     {
+    
+        public static Timer timer = new Timer();
+
+        public void cwMovement(ColorSensorV3 sensor, Spark cwMotor, Double speed, Color initColor,TimerTask sensorGetColor, int desiredRotations){
+            int a = 0;
+            cwMotor.set(speed);
+            timer.schedule(sensorGetColor, 750); //.75 seconds
+            
+            
+        }
         public void colorStop(ColorSensorV3 cV3, String gdString)
         {
             
@@ -153,6 +168,7 @@ public class Systems
         if(controller.getRawButtonPressed(8) == true)
         {
                 sole.set(true);
+                sole2.set(true);
         }
         
         else

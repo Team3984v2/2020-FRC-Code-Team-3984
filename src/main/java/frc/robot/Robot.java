@@ -7,11 +7,9 @@
 
 package frc.robot;
 
-import java.util.Timer;
 
 import com.ctre.phoenix.motorcontrol.Faults;
 import com.ctre.phoenix.motorcontrol.FeedbackDevice;
-import com.ctre.phoenix.motorcontrol.can.WPI_TalonSRX;
 import com.revrobotics.ColorMatch;
 import com.revrobotics.ColorMatchResult;
 import com.revrobotics.ColorSensorV3;
@@ -20,12 +18,7 @@ import edu.wpi.cscore.UsbCamera;
 import edu.wpi.cscore.VideoMode;
 import edu.wpi.first.cameraserver.CameraServer;
 import edu.wpi.first.wpilibj.I2C;
-import edu.wpi.first.wpilibj.Joystick;
-import edu.wpi.first.wpilibj.Solenoid;
-import edu.wpi.first.wpilibj.Spark;
 import edu.wpi.first.wpilibj.TimedRobot;
-import edu.wpi.first.wpilibj.XboxController;
-import edu.wpi.first.wpilibj.drive.DifferentialDrive;
 import edu.wpi.first.wpilibj.smartdashboard.SendableChooser;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj.util.Color;
@@ -47,13 +40,15 @@ public class Robot extends TimedRobot {
   private String m_autoSelected;
   private SendableChooser<String> m_chooser = new SendableChooser<>();
 
-
-  Timer timer = new Timer();
-
   
   //Setting up classes:
   public static Systems systems = new Systems();
   public static Systems.InnerSystems innerSystems = new Systems.InnerSystems();
+  public static Contants con = new Contants();
+  public static Contants.IO io = new Contants.IO();
+  public static Contants.IO.XController xboxController = new Contants.IO.XController();
+  public static Contants.IO.ButtonBoard buttonBoard = new Contants.IO.ButtonBoard();
+  public static Contants.Objects objects = new Contants.Objects();
 
 
   //public static Systems ballIntake = new Systems();
@@ -61,55 +56,16 @@ public class Robot extends TimedRobot {
    //variables and constants
    final I2C.Port i2cPort = I2C.Port.kOnboard;
    private boolean rdIndicator = false;
-   //private double chachaslide = -1;
 
-
-
-   //private int ball_counter = 0;   
-
-  //OI
-  private final XboxController m_drivexbcont = new XboxController(0);
-  private final Joystick m_buttonboard = new Joystick(1);
 
   private final Faults faults = new Faults();
-
-  //drivetrain
-  private final WPI_TalonSRX lMaster = new WPI_TalonSRX(9);
-  private final WPI_TalonSRX lSlave = new WPI_TalonSRX(2);
-  private final WPI_TalonSRX rMaster = new WPI_TalonSRX(10);
-  private final WPI_TalonSRX rSlave = new WPI_TalonSRX(3);
-  //private final DifferentialDrive m_drive = new DifferentialDrive(lMaster, rMaster);
-
-  //cannon intake motors
-  private final Spark lBallSpark = new Spark(0);
-  private final Spark rBallSpark = new Spark(1);
-
-  //ball intake motor
-  private final Spark intakeSpark = new Spark(2);
-  
-  //color wheel motor
-  private final Spark cwSpark = new Spark(3);
 
   //color strings
   private String gameData;
   private String obcolorString;
   private static Systems.ColorSys cSys = new Systems.ColorSys();
 
-  //DigitalInput ball sensor = new DigitalInput(0); 
-  // private final Faults _faults = new Faults();
-
-  //solenoids
-  private final int klSole = 0;
-  private final int krSole = 1;
-  private final Solenoid lSole = new Solenoid(klSole);
-  private final Solenoid rSole = new Solenoid(krSole);
-  
-  
-  
-//Yay
-  //private final Encoder m_encoder = new Encoder(0, 1, false, Encoder.EncodingType.k2X);
-
-  
+ 
   //color sensing
   private final ColorSensorV3 m_colorSensor = new ColorSensorV3(i2cPort);
 
@@ -139,13 +95,13 @@ public class Robot extends TimedRobot {
     SmartDashboard.putData("Auto choices", m_chooser);
   
    //Config Talons
-    innerSystems.configTalon(lMaster, rMaster, lSlave, rSlave);
-    lSlave.follow(lMaster);
-    rSlave.follow(rMaster);
+    innerSystems.configTalon(objects.lMaster, objects.rMaster, objects.lSlave, objects.rSlave);
+    objects.lSlave.follow(objects.lMaster);
+    objects.rSlave.follow(objects.rMaster);
 
-    lMaster.configSelectedFeedbackSensor(FeedbackDevice.QuadEncoder);
-    lMaster.setSelectedSensorPosition(0);
-    //rMaster.configSelectedFeedbackSensor(FeedbackDevice.CTRE_MagEncoder_Relative);
+    objects.lMaster.configSelectedFeedbackSensor(FeedbackDevice.QuadEncoder);
+    objects.lMaster.setSelectedSensorPosition(0);
+    //objects.rMaster.configSelectedFeedbackSensor(FeedbackDevice.CTRE_MagEncoder_Relative);
     //m_encoder.setDistancePerPulse(1./256.);
 
     m_colorMatcher.addColorMatch(kBlueTarget);
@@ -153,7 +109,7 @@ public class Robot extends TimedRobot {
     m_colorMatcher.addColorMatch(kRedTarget);
     m_colorMatcher.addColorMatch(kYellowTarget);   
 
-    rdIndicator = m_buttonboard.getRawButtonPressed(1);
+    rdIndicator = buttonBoard.button1;
 
 
 
@@ -203,23 +159,11 @@ public class Robot extends TimedRobot {
     //SmartDashboard.putNumber("IR", IR);
 
     //encoder values
-    SmartDashboard.putNumber("left Vel:", lMaster.getSelectedSensorVelocity());
-    SmartDashboard.putNumber("left Pos:", lMaster.getSelectedSensorPosition());
-    SmartDashboard.putNumber("left out %:", lMaster.getMotorOutputPercent());
+    SmartDashboard.putNumber("left Vel:", objects.lMaster.getSelectedSensorVelocity());
+    SmartDashboard.putNumber("left Pos:", objects.lMaster.getSelectedSensorPosition());
+    SmartDashboard.putNumber("left out %:", objects.lMaster.getMotorOutputPercent());
     SmartDashboard.putBoolean("Out of Phase", faults.SensorOutOfPhase);
 
-    //joystick values
-
-
-
-    //Hello
-
-    //if(ball_sensor.get() == true)
-    /*{
-      ball_counter = ball_counter + 1;
-      System.out.println("Ball in!" + "Total ball count: " + ball_counter);
-    }
-    */
 
   }  
   /**
@@ -259,7 +203,7 @@ public class Robot extends TimedRobot {
        
         break;
       default:
-        // Put default auto code her
+        // Put default auto code here
 
 
 
@@ -275,29 +219,23 @@ public class Robot extends TimedRobot {
 
     //the color of the wheel; B = 1; G = 2; R = 3; Y = 4; none = 0;
     int gameColor = innerSystems.gameData_Color();
-    lMaster.getFaults(faults);
+    objects.lMaster.getFaults(faults);
 
-    rdIndicator = m_buttonboard.getRawButton(1);
+    rdIndicator = buttonBoard.button1;
     if(rdIndicator == true)
     {
-      systems.driveTeleop(rMaster, lMaster, rSlave, lSlave, m_drivexbcont,true); 
+      systems.driveTeleop(objects.rMaster, objects.lMaster, objects.rSlave, objects.lSlave, xboxController.m_drivexbcont,true); 
     }
     else
     {
-      systems.driveTeleop(rMaster, lMaster, rSlave, lSlave, m_drivexbcont,false);
+      systems.driveTeleop(objects.rMaster, objects.lMaster, objects.rSlave, objects.lSlave, xboxController.m_drivexbcont,false);
     }
 
-    systems.activate(m_buttonboard, lBallSpark, rBallSpark);
-    systems.solenoidsOut(lSole, rSole, m_buttonboard);
+    systems.activate(buttonBoard.m_buttonboard, objects.lBallSpark, objects.rBallSpark);
 
+    systems.solenoidsOut(objects.lSole, objects.rSole, buttonBoard.m_buttonboard);
     
-    {
-      systems.driveTeleop(rMaster, lMaster, rSlave, lSlave, m_drivexbcont,false);
-    }
-
-    systems.activate(m_buttonboard, lBallSpark, rBallSpark);
-    systems.solenoidsOut(lSole, rSole, m_buttonboard);
-    systems.intake(intakeSpark, m_buttonboard);
+    systems.intake(objects.intakeSpark, buttonBoard.m_buttonboard);
 
     
   }

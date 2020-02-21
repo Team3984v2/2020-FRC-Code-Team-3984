@@ -44,6 +44,7 @@ public class Robot extends TimedRobot {
   //Setting up classes:
   public static Systems systems = new Systems();
   public static Systems.InnerSystems innerSystems = new Systems.InnerSystems();
+  public static overcannon overcannon = new overcannon();
   public static Contants con = new Contants();
   public static Contants.IO io = new Contants.IO();
   public static Contants.IO.XController xboxController = new Contants.IO.XController();
@@ -231,11 +232,16 @@ public class Robot extends TimedRobot {
       systems.driveTeleop(objects.rMaster, objects.lMaster, objects.rSlave, objects.lSlave, xboxController.m_drivexbcont,false);
     }
 
-    systems.activate(buttonBoard.m_buttonboard, objects.lBallSpark, objects.rBallSpark);
-
-    systems.solenoidsOut(objects.lSole, objects.rSole, buttonBoard.m_buttonboard);
     
-    systems.intake(objects.intakeSpark, buttonBoard.m_buttonboard);
+
+    systems.solenoidsOut(objects.soleSole, buttonBoard.m_buttonboard);
+    
+    if(buttonBoard.m_buttonboard.getRawButton(4) == true)
+  {
+    systems.intake(objects.intakeSpark, objects.lBallSpark, objects.rBallSpark, buttonBoard.m_buttonboard);
+  }else{
+    systems.activate(buttonBoard.m_buttonboard, objects.lBallSpark, objects.rBallSpark);
+  }
 
     
   }

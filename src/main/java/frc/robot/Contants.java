@@ -66,8 +66,7 @@ public class Contants {
         public final Spark cwSpark = new Spark(3);     //color wheel motor
 
         //Solenoids
-        public final Solenoid lSole = new Solenoid(0);
-        public final Solenoid rSole = new Solenoid(1);
+        public final Solenoid soleSole = new Solenoid(0);
     }
     
 }

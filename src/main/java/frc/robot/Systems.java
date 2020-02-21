@@ -136,8 +136,8 @@ public class Systems
         }
         else
         {
-            leftoutSpark.stopMotor();
-            rightoutSpark.stopMotor();
+            leftoutSpark.set(0);
+            rightoutSpark.set(0);
         }
 
       //  spin();
@@ -163,31 +163,57 @@ public class Systems
         }
     }
     //used to tilt the solenoids up
-    public void solenoidsOut(Solenoid sole, Solenoid sole2, Joystick controller)
+    public void solenoidsOut(Solenoid sole, Joystick controller)
     {
         if(controller.getRawButtonPressed(8) == true)
         {
-                sole.set(true);
-                sole2.set(true);
+            sole.set(true);
+        
         }
         
         else
         {                
             sole.set(false);
-            sole2.set(false);
+     
         }
     }
 
     //to turn the intake for the cannon
-    public void intake(SpeedController beltController, Joystick joystick)
+    public void intake(SpeedController beltController, Spark lSpark, Spark rSpark, Joystick joystick)
     {
         if(joystick.getRawButtonPressed(4) == true)
         {
             beltController.set(1);
+            lSpark.set(-.01);
+            rSpark.set(-.01);
         }
         else
         {
             beltController.set(0);
         }
     }
-}////////////////////
+}
+
+class cannon
+{
+    public void activate(Spark lSpark, Spark rSpark, Joystick controller)
+    {
+        if(controller.getRawButton(8) == true)
+        {
+            lSpark.set(1);
+            rSpark.set(1);
+        }
+        else
+        {
+            lSpark.set(0);
+            rSpark.set(0);
+        }
+    }
+}
+
+
+class overcannon
+{
+
+}
+////////////////////

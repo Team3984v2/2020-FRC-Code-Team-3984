@@ -54,9 +54,9 @@ public class Contants {
      static class Objects {
         
         //Talons
-        public  final WPI_TalonSRX lMaster = new WPI_TalonSRX(9);
+        public  final WPI_TalonSRX lMaster = new WPI_TalonSRX(1);
         public  final WPI_TalonSRX lSlave = new WPI_TalonSRX(2);
-        public  final WPI_TalonSRX rMaster = new WPI_TalonSRX(10);
+        public  final WPI_TalonSRX rMaster = new WPI_TalonSRX(4);
         public  final WPI_TalonSRX rSlave = new WPI_TalonSRX(3);
 
         //Sparks
@@ -66,7 +66,7 @@ public class Contants {
         public final Spark cwSpark = new Spark(3);     //color wheel motor
 
         //Solenoids
-        public final Solenoid soleSole = new Solenoid(0);
+       // public final Solenoid soleSole = new Solenoid(0);
     }
     
 }

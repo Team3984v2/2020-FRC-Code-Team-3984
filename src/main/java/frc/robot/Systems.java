@@ -41,31 +41,31 @@ public class Systems
             rMaster.configFactoryDefault();
             rSlave.configFactoryDefault();
             
-            lMaster.configNominalOutputForward(0, 30);
-            lMaster.configNominalOutputReverse(0, 30);
-            lMaster.configPeakOutputForward(1, 30);
-            lMaster.configPeakOutputReverse(-1, 30);
+            lMaster.configNominalOutputForward(0);
+            lMaster.configNominalOutputReverse(0);
+            lMaster.configPeakOutputForward(1);
+            lMaster.configPeakOutputReverse(-1);
             lMaster.setNeutralMode(NeutralMode.Brake);
         
                 
-            lSlave.configNominalOutputForward(0, 30);
-            lSlave.configNominalOutputReverse(0, 30);
-            lSlave.configPeakOutputForward(1, 30);
-            lSlave.configPeakOutputReverse(-1, 30);
+            lSlave.configNominalOutputForward(0);
+            lSlave.configNominalOutputReverse(0);
+            lSlave.configPeakOutputForward(1);
+            lSlave.configPeakOutputReverse(-1);
             lSlave.setNeutralMode(NeutralMode.Brake);
         
                 
-            rMaster.configNominalOutputForward(0, 30);
-            rMaster.configNominalOutputReverse(0, 30);
-            rMaster.configPeakOutputForward(1, 30);
-            rMaster.configPeakOutputReverse(-1, 30);
+            rMaster.configNominalOutputForward(0);
+            rMaster.configNominalOutputReverse(0);
+            rMaster.configPeakOutputForward(1);
+            rMaster.configPeakOutputReverse(-1);
             rMaster.setNeutralMode(NeutralMode.Brake);
         
                 
-            rSlave.configNominalOutputForward(0, 30);
-            rSlave.configNominalOutputReverse(0, 30);
-            rSlave.configPeakOutputForward(1, 30);
-            rSlave.configPeakOutputReverse(-1, 30);
+            rSlave.configNominalOutputForward(0);
+            rSlave.configNominalOutputReverse(0);
+            rSlave.configPeakOutputForward(1);
+            rSlave.configPeakOutputReverse(-1);
             rSlave.setNeutralMode(NeutralMode.Brake);
         }
         //used to get the color from the game
@@ -105,8 +105,8 @@ public class Systems
         if (inverse = true)
             invert = invert*-1;
 
-        Double speed = teemo.getY(Hand.kLeft); 
-        Double turn = teemo.getX(Hand.kRight);
+        Double speed = teemo.getX(Hand.kRight); 
+        Double turn = teemo.getY(Hand.kLeft);
        //teemo is the xbox thing, remember :)
         Double left = speed + turn;
         Double right = speed - turn;

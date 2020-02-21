@@ -234,7 +234,7 @@ public class Robot extends TimedRobot {
 
     
 
-    systems.solenoidsOut(objects.soleSole, buttonBoard.m_buttonboard);
+  //  systems.solenoidsOut(objects.soleSole, buttonBoard.m_buttonboard);
     
     if(buttonBoard.m_buttonboard.getRawButton(4) == true)
   {

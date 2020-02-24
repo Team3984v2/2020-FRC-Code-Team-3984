@@ -29,6 +29,13 @@ public class Systems
             talon.setSelectedSensorPosition(0);
         }
     }
+    public static double deadband(double rawNum){
+        if (rawNum == .05){
+            return 0;
+        }else{
+            return rawNum;
+        }
+    }
 
     /**
      * InnerSystems
@@ -45,28 +52,28 @@ public class Systems
             lMaster.configNominalOutputReverse(0);
             lMaster.configPeakOutputForward(1);
             lMaster.configPeakOutputReverse(-1);
-            lMaster.setNeutralMode(NeutralMode.Brake);
+            lMaster.setNeutralMode(NeutralMode.Coast);
         
                 
             lSlave.configNominalOutputForward(0);
             lSlave.configNominalOutputReverse(0);
             lSlave.configPeakOutputForward(1);
             lSlave.configPeakOutputReverse(-1);
-            lSlave.setNeutralMode(NeutralMode.Brake);
+            lSlave.setNeutralMode(NeutralMode.Coast);
         
                 
             rMaster.configNominalOutputForward(0);
             rMaster.configNominalOutputReverse(0);
             rMaster.configPeakOutputForward(1);
             rMaster.configPeakOutputReverse(-1);
-            rMaster.setNeutralMode(NeutralMode.Brake);
+            rMaster.setNeutralMode(NeutralMode.Coast);
         
                 
             rSlave.configNominalOutputForward(0);
             rSlave.configNominalOutputReverse(0);
             rSlave.configPeakOutputForward(1);
             rSlave.configPeakOutputReverse(-1);
-            rSlave.setNeutralMode(NeutralMode.Brake);
+            rSlave.setNeutralMode(NeutralMode.Coast);
         }
         //used to get the color from the game
         public int gameData_Color(){
@@ -98,6 +105,14 @@ public class Systems
         
     }
 
+    public static quadDrive(double rawValue){
+        if (rawValue > 0){
+            double rV2 = Math.pow(rawValue,2);
+            return rV2;
+        }else if (rawValue < 0){
+            double 
+        }
+    }
     //used to drive the robot
     public void driveTeleop(WPI_TalonSRX rMaster, WPI_TalonSRX lMaster, WPI_TalonSRX rSlave, WPI_TalonSRX lSlave, XboxController teemo, boolean inverse) {
 
@@ -105,8 +120,8 @@ public class Systems
         if (inverse = true)
             invert = invert*-1;
 
-        Double speed = teemo.getX(Hand.kRight); 
-        Double turn = teemo.getY(Hand.kLeft);
+        Double speed = deadband(teemo.getX(Hand.kRight)); 
+        Double turn = deadband(teemo.getY(Hand.kLeft));
        //teemo is the xbox thing, remember :)
         Double left = speed + turn;
         Double right = speed - turn;

@@ -56,7 +56,7 @@ public class Robot extends TimedRobot {
   
    //variables and constants
    final I2C.Port i2cPort = I2C.Port.kOnboard;
-   private boolean rdIndicator = false;
+   //private boolean rdIndicator = false;
 
 
   private final Faults faults = new Faults();
@@ -110,7 +110,7 @@ public class Robot extends TimedRobot {
     m_colorMatcher.addColorMatch(kRedTarget);
     m_colorMatcher.addColorMatch(kYellowTarget);   
 
-    rdIndicator = buttonBoard.button1;
+
 
 
 
@@ -222,26 +222,28 @@ public class Robot extends TimedRobot {
     int gameColor = innerSystems.gameData_Color();
     objects.lMaster.getFaults(faults);
 
-    rdIndicator = buttonBoard.button1;
+    boolean rdIndicator = buttonBoard.button1();
     if(rdIndicator == true)
     {
       systems.driveTeleop(objects.rMaster, objects.lMaster, objects.rSlave, objects.lSlave, xboxController.m_drivexbcont,true); 
+      System.out.println("t true");
     }
     else
     {
       systems.driveTeleop(objects.rMaster, objects.lMaster, objects.rSlave, objects.lSlave, xboxController.m_drivexbcont,false);
+      System.out.println("t false");
     }
+    System.out.println(rdIndicator);
 
     
 
   //  systems.solenoidsOut(objects.soleSole, buttonBoard.m_buttonboard);
     
-    if(buttonBoard.m_buttonboard.getRawButton(4) == true)
-  {
-    systems.intake(objects.intakeSpark, objects.lBallSpark, objects.rBallSpark, buttonBoard.m_buttonboard);
-  }else{
-    systems.activate(buttonBoard.m_buttonboard, objects.lBallSpark, objects.rBallSpark);
-  }
+
+    systems.intake(objects.intakeSpark, objects.lBallSpark, objects.rBallSpark, xboxController.m_drivexbcont);
+
+    systems.activate(xboxController.m_drivexbcont, objects.lBallSpark, objects.rBallSpark);
+  
 
     
   }

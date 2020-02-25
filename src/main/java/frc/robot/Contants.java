@@ -39,7 +39,9 @@ public class Contants {
             public  final Joystick m_buttonboard = new Joystick(1);
 
             //More buttons than you need
-            public  Boolean button1 = m_buttonboard.getRawButton(1);
+            public  Boolean button1(){
+                return m_buttonboard.getRawButton(1);
+            } 
             public  Boolean button2 = m_buttonboard.getRawButton(2);
             public  Boolean button3 = m_buttonboard.getRawButton(3);
             public  Boolean button4 = m_buttonboard.getRawButton(4);

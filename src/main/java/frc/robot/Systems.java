@@ -105,13 +105,21 @@ public class Systems
         
     }
 
-    public static quadDrive(double rawValue){
-        if (rawValue > 0){
-            double rV2 = Math.pow(rawValue,2);
-            return rV2;
-        }else if (rawValue < 0){
-            double 
+    public static double quadDrive(double rawValue, boolean state){
+        if(state == true){
+            if (rawValue > 0){
+                double rV2 = Math.pow(rawValue,2);
+                return rV2;
+            }else if (rawValue < 0){
+                double rV3 = -(Math.pow(rawValue, 2));
+                return rV3;
+            }else{
+                return 0;
+            }
+        }else{
+            return rawValue;
         }
+        
     }
     //used to drive the robot
     public void driveTeleop(WPI_TalonSRX rMaster, WPI_TalonSRX lMaster, WPI_TalonSRX rSlave, WPI_TalonSRX lSlave, XboxController teemo, boolean inverse) {
@@ -120,15 +128,15 @@ public class Systems
         if (inverse = true)
             invert = invert*-1;
 
-        Double speed = deadband(teemo.getX(Hand.kRight)); 
-        Double turn = deadband(teemo.getY(Hand.kLeft));
+        Double speed = (quadDrive(deadband(-teemo.getX(Hand.kRight)),true)*invert); 
+        Double turn = (quadDrive(deadband(teemo.getY(Hand.kLeft)),true)*invert);
        //teemo is the xbox thing, remember :)
         Double left = speed + turn;
         Double right = speed - turn;
        
-        lMaster.set(left*invert);
+        lMaster.set(left);
        // lSlave.set(left*invert);
-        rMaster.set(right*invert);
+        rMaster.set(right);
        // rSlave.set(right*invert);
 
 
@@ -142,9 +150,9 @@ public class Systems
     }
 
     //used to turn on the cannon
-    public void activate(Joystick joystick, Spark leftoutSpark, Spark rightoutSpark)
+    public void activate(XboxController joystick, Spark leftoutSpark, Spark rightoutSpark)
     {
-        if(joystick.getRawButtonPressed(1) == true)
+        if(deadband(joystick.getTriggerAxis(Hand.kRight)) > .5)
         {
             leftoutSpark.set(1);
             rightoutSpark.set(1);
@@ -172,7 +180,7 @@ public class Systems
             
             
         }
-        public void colorStop(ColorSensorV3 cV3, String gdString)
+        //public void colorStop(ColorSensorV3 cV3, String gdString)
         {
             
         }
@@ -194,16 +202,18 @@ public class Systems
     }
 
     //to turn the intake for the cannon
-    public void intake(SpeedController beltController, Spark lSpark, Spark rSpark, Joystick joystick)
+    public void intake(Spark beltController, Spark lSpark, Spark rSpark, XboxController joystick)
     {
-        if(joystick.getRawButtonPressed(4) == true)
+        if(joystick.getBumper(Hand.kRight) == true && joystick.getTriggerAxis(Hand.kRight) < .4)
         {
             beltController.set(1);
             lSpark.set(-.01);
             rSpark.set(-.01);
         }
-        else
+        else if (joystick.getBumper(Hand.kRight) == true && !(joystick.getTriggerAxis(Hand.kRight) < .4))
         {
+            beltController.set(1);
+        }else{
             beltController.set(0);
         }
     }
@@ -211,9 +221,17 @@ public class Systems
 
 class cannon
 {
-    public void activate(Spark lSpark, Spark rSpark, Joystick controller)
+    public static double deadband(double rawNum){
+        if (rawNum == .5){
+            return 0;
+        }else{
+            return rawNum;
+        }
+    }
+
+    public void activate(Spark lSpark, Spark rSpark, XboxController controller)
     {
-        if(controller.getRawButton(8) == true)
+        if(deadband(controller.getTriggerAxis(Hand.kRight)) != 0)
         {
             lSpark.set(1);
             rSpark.set(1);

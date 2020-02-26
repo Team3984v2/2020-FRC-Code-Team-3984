@@ -29,9 +29,8 @@ public class Systems
             talon.setSelectedSensorPosition(0);
         }
     }
-
     public static double deadband(double rawNum){
-        if (rawNum < .05){
+        if (rawNum == .05){
             return 0;
         }else{
             return rawNum;
@@ -122,13 +121,11 @@ public class Systems
         }
         
     }
-
-
     //used to drive the robot
     public void driveTeleop(WPI_TalonSRX rMaster, WPI_TalonSRX lMaster, WPI_TalonSRX rSlave, WPI_TalonSRX lSlave, XboxController teemo, boolean inverse) {
 
         double invert = 1;
-        if (inverse == true)
+        if (inverse = true)
             invert = invert*-1;
 
         Double speed = (quadDrive(deadband(-teemo.getX(Hand.kRight)),true)*invert); 
@@ -148,6 +145,9 @@ public class Systems
     }
 
 
+    public static void spin(Joystick buttonthing, Spark soloSpark){
+
+    }
 
     //used to turn on the cannon
     public void activate(XboxController joystick, Spark leftoutSpark, Spark rightoutSpark)
@@ -162,64 +162,29 @@ public class Systems
             leftoutSpark.set(0);
             rightoutSpark.set(0);
         }
+
+      //  spin();
+
        
     }
-    //to turn the intake for the cannon
-    public void intake(Spark beltController, Spark lSpark, Spark rSpark, XboxController joystick)
+
+    static class ColorSys
     {
-        if(joystick.getBumper(Hand.kRight) == true && joystick.getTriggerAxis(Hand.kRight) < .4)
-        {
-            beltController.set(1);
-            lSpark.set(-.01);
-            rSpark.set(-.01);
-        }
-        else if (joystick.getBumper(Hand.kRight) == true && !(joystick.getTriggerAxis(Hand.kRight) < .4))
-        {
-            beltController.set(1);
-        }else{
-            beltController.set(0);
-        }
-    }
+    
+        public static Timer timer = new Timer();
 
-    public void cannon(XboxController con, Spark lShoot, Spark rShoot, Spark belt){
-        if (deadband(con.getTriggerAxis(Hand.kRight)) > .5){
-            if (con.getBumper(Hand.kRight) == true){
-                lShoot.set(1);
-                rShoot.set(1);
-                belt.set(1);
-            }else if(con.getBumper(Hand.kRight) == false){
-                lShoot.set(1);
-                rShoot.set(1);
-                belt.set(0);
-            }
-        }else if(deadband(con.getTriggerAxis(Hand.kRight)) < .5){
-            if (con.getBumper(Hand.kRight) == true){
-                belt.set(1);
-                lShoot.set(-.01);
-                rShoot.set(-.01);
-            }else if (con.getBumper(Hand.kRight) == false){
-                belt.set(0);
-                lShoot.set(0);
-                rShoot.set(0);
-            }
-        }else{
-            belt.set(0);
-            lShoot.set(0);
-            rShoot.set(0);
-        }
-    }
-
-
-    public static Timer timer = new Timer();
-
-    public void cwMovement(ColorSensorV3 sensor, Spark cwMotor, Double speed, Color initColor,TimerTask sensorGetColor, int desiredRotations){
-        int a = 0;
-        cwMotor.set(speed);
-        timer.schedule(sensorGetColor, 750); //.75 seconds
+        public void cwMovement(ColorSensorV3 sensor, Spark cwMotor, Double speed, Color initColor,TimerTask sensorGetColor, int desiredRotations){
+            int a = 0;
+            cwMotor.set(speed);
+            timer.schedule(sensorGetColor, 750); //.75 seconds
             
             
+        }
+        //public void colorStop(ColorSensorV3 cV3, String gdString)
+        {
+            
+        }
     }
-     
     //used to tilt the solenoids up
     public void solenoidsOut(Solenoid sole, Joystick controller)
     {
@@ -236,13 +201,28 @@ public class Systems
         }
     }
 
-    
+    //to turn the intake for the cannon
+    public void intake(Spark beltController, Spark lSpark, Spark rSpark, XboxController joystick)
+    {
+        if(joystick.getBumper(Hand.kRight) == true && joystick.getTriggerAxis(Hand.kRight) < .4)
+        {
+            beltController.set(1);
+            lSpark.set(-.01);
+            rSpark.set(-.01);
+        }
+        else if (joystick.getBumper(Hand.kRight) == true && !(joystick.getTriggerAxis(Hand.kRight) < .4))
+        {
+            beltController.set(1);
+        }else{
+            beltController.set(0);
+        }
+    }
 }
 
 class cannon
 {
     public static double deadband(double rawNum){
-        if (rawNum < .5){
+        if (rawNum == .5){
             return 0;
         }else{
             return rawNum;
@@ -264,3 +244,9 @@ class cannon
     }
 }
 
+
+class overcannon
+{
+
+}
+////////////////////

@@ -44,6 +44,7 @@ public class Robot extends TimedRobot {
   //Setting up classes:
   public static Systems systems = new Systems();
   public static Systems.InnerSystems innerSystems = new Systems.InnerSystems();
+  public static overcannon overcannon = new overcannon();
   public static Contants con = new Contants();
   public static Contants.IO io = new Contants.IO();
   public static Contants.IO.XController xboxController = new Contants.IO.XController();
@@ -63,6 +64,7 @@ public class Robot extends TimedRobot {
   //color strings
   private String gameData;
   private String obcolorString;
+  private static Systems.ColorSys cSys = new Systems.ColorSys();
 
  
   //color sensing
@@ -233,13 +235,17 @@ public class Robot extends TimedRobot {
     }
     System.out.println(rdIndicator);
 
-    systems.cannon(xboxController.m_drivexbcont, objects.lBallSpark, objects.rBallSpark, objects.intakeSpark);
-
     
 
   //  systems.solenoidsOut(objects.soleSole, buttonBoard.m_buttonboard);
     
-   
+
+    systems.intake(objects.intakeSpark, objects.lBallSpark, objects.rBallSpark, xboxController.m_drivexbcont);
+
+    systems.activate(xboxController.m_drivexbcont, objects.lBallSpark, objects.rBallSpark);
+  
+
+    
   }
     
   @Override

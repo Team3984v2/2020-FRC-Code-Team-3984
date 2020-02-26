@@ -54,6 +54,7 @@ public class Robot extends TimedRobot {
 
   //public static Systems ballIntake = new Systems();
   
+  
    //variables and constants
    final I2C.Port i2cPort = I2C.Port.kOnboard;
    //private boolean rdIndicator = false;
@@ -108,7 +109,9 @@ public class Robot extends TimedRobot {
     m_colorMatcher.addColorMatch(kBlueTarget);
     m_colorMatcher.addColorMatch(kGreenTarget);
     m_colorMatcher.addColorMatch(kRedTarget);
-    m_colorMatcher.addColorMatch(kYellowTarget);   
+    m_colorMatcher.addColorMatch(kYellowTarget);  
+    objects.rBallSpark.setInverted(true); 
+    objects.intakeSpark.setInverted(true);
 
 
 

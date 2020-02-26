@@ -30,7 +30,7 @@ public class Systems
         }
     }
     public static double deadband(double rawNum){
-        if (rawNum == .05){
+        if (Math.abs(rawNum) < .05){
             return 0;
         }else{
             return rawNum;
@@ -108,10 +108,10 @@ public class Systems
     public static double quadDrive(double rawValue, boolean state){
         if(state == true){
             if (rawValue > 0){
-                double rV2 = Math.pow(rawValue,2);
+                double rV2 = Math.pow(rawValue,3);
                 return rV2;
             }else if (rawValue < 0){
-                double rV3 = -(Math.pow(rawValue, 2));
+                double rV3 = (Math.pow(rawValue, 3));
                 return rV3;
             }else{
                 return 0;
@@ -125,7 +125,7 @@ public class Systems
     public void driveTeleop(WPI_TalonSRX rMaster, WPI_TalonSRX lMaster, WPI_TalonSRX rSlave, WPI_TalonSRX lSlave, XboxController teemo, boolean inverse) {
 
         double invert = 1;
-        if (inverse = true)
+        if (inverse == true)
             invert = invert*-1;
 
         Double speed = (quadDrive(deadband(-teemo.getX(Hand.kRight)),true)*invert); 
@@ -206,13 +206,13 @@ public class Systems
     {
         if(joystick.getBumper(Hand.kRight) == true && joystick.getTriggerAxis(Hand.kRight) < .4)
         {
-            beltController.set(1);
+            beltController.set(.25);
             lSpark.set(-.01);
             rSpark.set(-.01);
         }
         else if (joystick.getBumper(Hand.kRight) == true && !(joystick.getTriggerAxis(Hand.kRight) < .4))
         {
-            beltController.set(1);
+            beltController.set(.25);
         }else{
             beltController.set(0);
         }

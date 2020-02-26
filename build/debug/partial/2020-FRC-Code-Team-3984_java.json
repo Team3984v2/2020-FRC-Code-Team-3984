@@ -1,0 +1,11 @@
+[
+  {
+    "name": "2020-FRC-Code-Team-3984 (in project 2020-FRC-Code-Team-3984)",
+    "file": "C:\\Users\\topperrobotics\\Desktop\\code-from-2020\\code-from-2020\\2020-FRC-Code-Team-3984\\build\\libs\\2020-FRC-Code-Team-3984.jar",
+    "extensions": [
+      "C:\\Users\\topperrobotics\\Desktop\\code-from-2020\\code-from-2020\\2020-FRC-Code-Team-3984\\build\\tmp\\expandedArchives\\halsim_gui-2020.1.2-windowsx86-64.zip_0ded91afab576f356c80ba4c4e7b8310\\windows\\x86-64\\shared\\halsim_gui.dll"
+    ],
+    "librarydir": "C:\\Users\\topperrobotics\\Desktop\\code-from-2020\\code-from-2020\\2020-FRC-Code-Team-3984\\build\\tmp\\jniExtractDir",
+    "mainclass": "frc.robot.Main"
+  }
+]

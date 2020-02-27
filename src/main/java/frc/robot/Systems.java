@@ -7,6 +7,7 @@ import com.ctre.phoenix.motorcontrol.NeutralMode;
 import com.ctre.phoenix.motorcontrol.can.WPI_TalonSRX;
 import com.revrobotics.ColorSensorV3;
 
+import edu.wpi.first.wpilibj.DoubleSolenoid;
 import edu.wpi.first.wpilibj.DriverStation;
 import edu.wpi.first.wpilibj.GenericHID.Hand;
 import edu.wpi.first.wpilibj.Joystick;
@@ -14,6 +15,7 @@ import edu.wpi.first.wpilibj.Solenoid;
 import edu.wpi.first.wpilibj.Spark;
 import edu.wpi.first.wpilibj.SpeedController;
 import edu.wpi.first.wpilibj.XboxController;
+import edu.wpi.first.wpilibj.DoubleSolenoid.Value;
 import edu.wpi.first.wpilibj.util.Color;
 
 public class Systems
@@ -105,7 +107,7 @@ public class Systems
         
     }
 
-    public static double quadDrive(double rawValue, boolean state){
+    public static double cubeDrive(double rawValue, boolean state){
         if(state == true){
             if (rawValue > 0){
                 double rV2 = Math.pow(rawValue,3);
@@ -128,8 +130,8 @@ public class Systems
         if (inverse == true)
             invert = invert*-1;
 
-        Double speed = (quadDrive(deadband(-teemo.getX(Hand.kRight)),true)*invert); 
-        Double turn = (quadDrive(deadband(teemo.getY(Hand.kLeft)),true)*invert);
+        Double speed = (cubeDrive(deadband(-teemo.getX(Hand.kRight)),true)*invert); 
+        Double turn = (cubeDrive(deadband(teemo.getY(Hand.kLeft)),true)*invert);
        //teemo is the xbox thing, remember :)
         Double left = speed + turn;
         Double right = speed - turn;
@@ -144,12 +146,80 @@ public class Systems
     
     }
 
-
-    public static void spin(Joystick buttonthing, Spark soloSpark){
-
+    public void cannon(XboxController x, Spark l, Spark r, Spark b){
+        if (x.getTriggerAxis(Hand.kRight) > .5){
+            if(x.getBumper(Hand.kRight) == true){
+                l.set(1);
+                r.set(1);
+                b.set(.25);
+            }else{
+                l.set(1);
+                r.set(1);
+                b.set(0);
+            }
+        }else {
+            if(x.getBumper(Hand.kRight) == true){
+                l.set(0);
+                r.set(0);
+                b.set(.25);
+            }else{
+                l.set(0);
+                r.set(0);
+                b.set(0);
+            }
+        }
     }
 
-    //used to turn on the cannon
+    public void soleControl(XboxController x, DoubleSolenoid soleA, DoubleSolenoid soleB){
+        if (x.getAButton() == true && x.getBButton() == false) {
+            soleA.set(Value.kForward);
+            soleB.set(Value.kForward);
+        }
+        if (x.getBButton() == true && x.getAButton() == false){
+            soleA.set(Value.kReverse);
+            soleB.set(Value.kReverse);
+        }if (x.getAButtonReleased() == true || x.getBButtonReleased() == true || (x.getAButton() == true && x.getBButton() == true)){
+            soleA.set(Value.kOff);
+            soleB.set(Value.kOff);
+        }else{
+            soleA.set(Value.kOff);
+            soleB.set(Value.kOff);
+        }
+    }
+
+    @Deprecated /* use soleControl */
+    public void solenoidsOut(Solenoid sole, Joystick controller)
+    {
+        if(controller.getRawButtonPressed(8) == true)
+        {
+            sole.set(true);
+        
+        }
+        
+        else
+        {                
+            sole.set(false);
+     
+        }
+    }
+    //to turn the intake for the cannon
+    @Deprecated /* use cannon() */
+    public void intake(Spark beltController, Spark lSpark, Spark rSpark, XboxController joystick)
+    {
+        if(joystick.getBumper(Hand.kRight) == true && joystick.getTriggerAxis(Hand.kRight) < .4)
+        {
+            beltController.set(.25);
+            lSpark.set(-.01);
+            rSpark.set(-.01);
+        }
+        else if (joystick.getBumper(Hand.kRight) == true && !(joystick.getTriggerAxis(Hand.kRight) < .4))
+        {
+            beltController.set(.25);
+        }else{
+            beltController.set(0);
+        }
+    }
+    @Deprecated /* use cannon() */
     public void activate(XboxController joystick, Spark leftoutSpark, Spark rightoutSpark)
     {
         if(deadband(joystick.getTriggerAxis(Hand.kRight)) > .5)
@@ -185,68 +255,5 @@ public class Systems
             
         }
     }
-    //used to tilt the solenoids up
-    public void solenoidsOut(Solenoid sole, Joystick controller)
-    {
-        if(controller.getRawButtonPressed(8) == true)
-        {
-            sole.set(true);
-        
-        }
-        
-        else
-        {                
-            sole.set(false);
-     
-        }
-    }
-
-    //to turn the intake for the cannon
-    public void intake(Spark beltController, Spark lSpark, Spark rSpark, XboxController joystick)
-    {
-        if(joystick.getBumper(Hand.kRight) == true && joystick.getTriggerAxis(Hand.kRight) < .4)
-        {
-            beltController.set(.25);
-            lSpark.set(-.01);
-            rSpark.set(-.01);
-        }
-        else if (joystick.getBumper(Hand.kRight) == true && !(joystick.getTriggerAxis(Hand.kRight) < .4))
-        {
-            beltController.set(.25);
-        }else{
-            beltController.set(0);
-        }
-    }
 }
 
-class cannon
-{
-    public static double deadband(double rawNum){
-        if (rawNum == .5){
-            return 0;
-        }else{
-            return rawNum;
-        }
-    }
-
-    public void activate(Spark lSpark, Spark rSpark, XboxController controller)
-    {
-        if(deadband(controller.getTriggerAxis(Hand.kRight)) != 0)
-        {
-            lSpark.set(1);
-            rSpark.set(1);
-        }
-        else
-        {
-            lSpark.set(0);
-            rSpark.set(0);
-        }
-    }
-}
-
-
-class overcannon
-{
-
-}
-////////////////////

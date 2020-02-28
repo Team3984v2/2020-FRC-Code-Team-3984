@@ -31,6 +31,12 @@ public class Systems
             talon.setSelectedSensorPosition(0);
         }
     }
+
+    /**
+     * This is a dead band. Input ranges between -.05 to .05 will be returned as 0.
+     * @param rawNum The double value
+     * @return Returns the raw value if it isn't in the Deadband range
+     */
     public static double deadband(double rawNum){
         if (Math.abs(rawNum) < .05){
             return 0;
@@ -107,6 +113,14 @@ public class Systems
         
     }
 
+
+    /**
+     * This method, if state == true, will cube the raw value. This is ment to be used for joystick/Trigger
+     * Axises wich vary from -1 to 1.
+     * @param rawValue The input or raw value of the Axis
+     * @param state Weather (true) or not (false) to run the method
+     * @return Returns the cubed double value
+     */
     public static double cubeDrive(double rawValue, boolean state){
         if(state == true){
             if (rawValue > 0){
@@ -123,7 +137,15 @@ public class Systems
         }
         
     }
-    //used to drive the robot
+    /**
+     * This Method is used as an arcade dive for four WPI_TalsonSRX Motor controllers. Also inverts the control if needed
+     * @param rMaster Right Front Motor
+     * @param lMaster Left Front Motor
+     * @param rSlave Right Back Motor (make sure that you've set it to follow RMaster in roboInit)
+     * @param lSlave Left Back Motor (make sure that you've set it to follow lMaster in roboInit)
+     * @param teemo Xbox Controller
+     * @param inverse If true, the robot orientation is flipped
+     */
     public void driveTeleop(WPI_TalonSRX rMaster, WPI_TalonSRX lMaster, WPI_TalonSRX rSlave, WPI_TalonSRX lSlave, XboxController teemo, boolean inverse) {
 
         double invert = 1;
@@ -141,11 +163,17 @@ public class Systems
         rMaster.set(right);
        // rSlave.set(right*invert);
 
-
-
     
     }
 
+    /**
+     * The Method is ment to control the entire intake and shooting system.
+     * @param x Xbox controller
+     * @param l Left cannon spark
+     * @param r Right cannon spark
+     * @param b Belt motor (controls intake)
+     * 
+     */
     public void cannon(XboxController x, Spark l, Spark r, Spark b){
         if (x.getTriggerAxis(Hand.kRight) > .5){
             if(x.getBumper(Hand.kRight) == true){
@@ -170,6 +198,13 @@ public class Systems
         }
     }
 
+    /**
+     * This method enables the "A" and "B" buttons on the Xbox controller to control the solenoids refrenced.
+     * NOTE: this is set up for two "DoubleSolenoid"s, not two "Solenoid"s
+     * @param x xbox controller
+     * @param soleA this is a double solenoid
+     * @param soleB this is lso a double solenoid
+     */
     public void soleControl(XboxController x, DoubleSolenoid soleA, DoubleSolenoid soleB){
         if (x.getAButton() == true && x.getBButton() == false) {
             soleA.set(Value.kForward);

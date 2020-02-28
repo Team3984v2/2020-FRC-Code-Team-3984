@@ -2,12 +2,12 @@ package frc.robot;
 
 import com.ctre.phoenix.motorcontrol.can.WPI_TalonSRX;
 
-import edu.wpi.first.wpilibj.GenericHID.Hand;
 import edu.wpi.first.wpilibj.DoubleSolenoid;
+import edu.wpi.first.wpilibj.GenericHID.Hand;
 import edu.wpi.first.wpilibj.Joystick;
-import edu.wpi.first.wpilibj.Solenoid;
 import edu.wpi.first.wpilibj.Spark;
 import edu.wpi.first.wpilibj.XboxController;
+import edu.wpi.first.wpilibj.drive.DifferentialDrive;
 
 public class Contants {
 
@@ -61,7 +61,7 @@ public class Contants {
         public  final WPI_TalonSRX lSlave = new WPI_TalonSRX(2);
         public  final WPI_TalonSRX rMaster = new WPI_TalonSRX(4);
         public  final WPI_TalonSRX rSlave = new WPI_TalonSRX(3);
-
+        public  final DifferentialDrive m_autoDrive = new DifferentialDrive(lMaster, rMaster);
         //Sparks
         public  final Spark lBallSpark = new Spark(0);  //cannon intake motor 1
         public  final Spark rBallSpark = new Spark(1);  //cannon intake motor 2
@@ -73,5 +73,5 @@ public class Contants {
        public final DoubleSolenoid soleA = new DoubleSolenoid(0,1);
        public final DoubleSolenoid soleB = new DoubleSolenoid(2,3);
     }
-    
+
 }

@@ -52,6 +52,7 @@ public class Robot extends TimedRobot {
   // variables and constants
   final I2C.Port i2cPort = I2C.Port.kOnboard;
   // private boolean rdIndicator = false;
+  int time = 0;
 
   private final Faults faults = new Faults();
 
@@ -70,6 +71,7 @@ public class Robot extends TimedRobot {
   private final Color kGreenTarget = ColorMatch.makeColor(0.197, 0.561, 0.240);
   private final Color kRedTarget = ColorMatch.makeColor(0.561, 0.232, 0.114);
   private final Color kYellowTarget = ColorMatch.makeColor(0.361, 0.524, 0.113);
+
   // trying to do the suggested integer part...
 
   @Override
@@ -77,7 +79,6 @@ public class Robot extends TimedRobot {
     UsbCamera m_usbCamera = new UsbCamera("USB Camera 0", 0);
     UsbCamera m_cameraserv = CameraServer.getInstance().startAutomaticCapture(0);
     m_cameraserv.setVideoMode(VideoMode.PixelFormat.kYUYV, 604, 480, 30);
-
     m_chooser.setDefaultOption("Option 1:", kOption1);
     m_chooser.addOption("Default Auto", kDefaultAuto);
     m_chooser.addOption("My Auto", kCustomAuto);
@@ -184,6 +185,17 @@ public class Robot extends TimedRobot {
         break;
       case kDefaultAuto:
 
+      //drive forward straight for 2 seconds    
+      for(int i = 0; i < 2000; i++)
+          {
+              objects.m_autoDrive.tankDrive(1, 1);
+          }
+      
+      //turn left
+      for(int i = 0; i < 500; i++)
+      {
+          objects.m_autoDrive.tankDrive(-1,1);
+      }
         break;
       case kOption1:
 
@@ -199,6 +211,7 @@ public class Robot extends TimedRobot {
    */
   @Override
   public void teleopPeriodic() {
+    time++;
 
     // the color of the wheel; B = 1; G = 2; R = 3; Y = 4; none = 0;
     int gameColor = innerSystems.gameData_Color();

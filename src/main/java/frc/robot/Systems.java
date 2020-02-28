@@ -84,24 +84,31 @@ public class Systems
             rSlave.setNeutralMode(NeutralMode.Coast);
         }
         //used to get the color from the game
-        public int gameData_Color(){
+        public int gameData_Color()
+        {
             String gameData = DriverStation.getInstance().getGameSpecificMessage();
             int a;
             if(gameData.length() > 0){
-                if(gameData.charAt(0) == 'B'){
-                    a = 1;
-                }
-                else if(gameData.charAt(0) == 'G'){
-                    a = 2;
-                }
-                else if(gameData.charAt(0) == 'R'){
-                    a = 3;
-                }
-                else if(gameData.charAt(0) == 'Y'){
-                    a = 4;
-                }else{
-                    a = 0;
-                }
+                if(gameData.charAt(0) == 'B')
+                    {
+                        a = 1;
+                    }
+                else if(gameData.charAt(0) == 'G')
+                    {
+                        a = 2;
+                    }
+                else if(gameData.charAt(0) == 'R')
+                    {
+                        a = 3;
+                    }
+                else if(gameData.charAt(0) == 'Y')
+                    {
+                        a = 4;
+                    }
+                else
+                    {
+                        a = 0;
+                    }
             }else{
                 a = 0;
             }
@@ -121,18 +128,27 @@ public class Systems
      * @param state Weather (true) or not (false) to run the method
      * @return Returns the cubed double value
      */
-    public static double cubeDrive(double rawValue, boolean state){
-        if(state == true){
-            if (rawValue > 0){
-                double rV2 = Math.pow(rawValue,3);
-                return rV2;
-            }else if (rawValue < 0){
-                double rV3 = (Math.pow(rawValue, 3));
-                return rV3;
-            }else{
-                return 0;
-            }
-        }else{
+    public static double cubeDrive(double rawValue, boolean state)
+    {
+        if(state == true)
+        {
+            if (rawValue > 0)
+                {
+                    double rV2 = Math.pow(rawValue,3);
+                    return rV2;
+                }
+            else if (rawValue < 0)
+                {
+                    double rV3 = (Math.pow(rawValue, 3));
+                    return rV3;
+                }
+            else
+                {
+                    return 0;
+                }
+        }
+        else
+        {
             return rawValue;
         }
         
@@ -174,29 +190,70 @@ public class Systems
      * @param b Belt motor (controls intake)
      * 
      */
-    public void cannon(XboxController x, Spark l, Spark r, Spark b){
-        if (x.getTriggerAxis(Hand.kRight) > .5){
-            if(x.getBumper(Hand.kRight) == true){
+    public void cannon(XboxController x, Spark l, Spark r, Spark b)
+    {
+        if (x.getTriggerAxis(Hand.kRight) > .5)
+        {
+            if(x.getBumper(Hand.kRight) == true)
+            {
                 l.set(1);
                 r.set(1);
                 b.set(.25);
-            }else{
+            }
+            else
+            {
                 l.set(1);
                 r.set(1);
                 b.set(0);
             }
-        }else {
-            if(x.getBumper(Hand.kRight) == true){
+        }
+        else
+        {
+            if(x.getBumper(Hand.kRight) == true)
+            {
                 l.set(0);
                 r.set(0);
                 b.set(.25);
-            }else{
+            }
+            else
+            {
                 l.set(0);
                 r.set(0);
                 b.set(0);
             }
         }
+        
     }
+
+    /**
+     * dispalay
+     * @param leftV disc
+     * 
+     * 
+     * 
+     */
+    public void leftrealign(WPI_TalonSRX leftTalonSRX, WPI_TalonSRX rightTalonSRX, int leftV)
+    {
+        leftV = leftTalonSRX.getSelectedSensorVelocity();
+        if (leftV != rightTalonSRX.getSelectedSensorVelocity())
+        {
+            leftTalonSRX.set(0);
+        }
+        else
+        {
+
+        }
+    }
+
+    public void rightrealight(WPI_TalonSRX leftTalon, WPI_TalonSRX rightTalon, int rightV)
+    {
+        rightV = rightTalon.getSelectedSensorVelocity();    
+        if (rightV != leftTalon.getSelectedSensorVelocity());
+        {
+
+        }
+    }
+
 
     /**
      * This method enables the "A" and "B" buttons on the Xbox controller to control the solenoids refrenced.

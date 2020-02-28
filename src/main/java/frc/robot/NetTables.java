@@ -24,25 +24,6 @@ public class NetTables
     }
 
     
-    public void leftrealign(WPI_TalonSRX leftTalonSRX, WPI_TalonSRX rightTalonSRX, int leftV)
-    {
-        leftV = leftTalonSRX.getSelectedSensorVelocity();
-        if (leftV != rightTalonSRX.getSelectedSensorVelocity())
-        {
-            
-        }
-        else
-        {
+    
 
-        }
-    }
-
-    public void rightrealight(WPI_TalonSRX leftTalon, WPI_TalonSRX rightTalon, int rightV)
-    {
-        rightV = rightTalon.getSelectedSensorVelocity()
-        if (rightV != leftTalon.getSelectedSensor)
-        {
-
-        }
-    }
 }

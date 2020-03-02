@@ -244,7 +244,10 @@ public class Systems
 
         }
     }
-
+    /**
+     * 
+     * @param rightV the velocity of the right motor controller
+     */
     public void rightrealight(WPI_TalonSRX leftTalon, WPI_TalonSRX rightTalon, int rightV)
     {
         rightV = rightTalon.getSelectedSensorVelocity();    
@@ -263,17 +266,22 @@ public class Systems
      * @param soleB this is lso a double solenoid
      */
     public void soleControl(XboxController x, DoubleSolenoid soleA, DoubleSolenoid soleB){
-        if (x.getAButton() == true && x.getBButton() == false) {
+        if (x.getAButton() == true && x.getBButton() == false) 
+        {
             soleA.set(Value.kForward);
             soleB.set(Value.kForward);
         }
-        if (x.getBButton() == true && x.getAButton() == false){
+        if (x.getBButton() == true && x.getAButton() == false)
+        {
             soleA.set(Value.kReverse);
             soleB.set(Value.kReverse);
-        }if (x.getAButtonReleased() == true || x.getBButtonReleased() == true || (x.getAButton() == true && x.getBButton() == true)){
+        }
+        if (x.getAButtonReleased() == true || x.getBButtonReleased() == true || (x.getAButton() == true && x.getBButton() == true))
+        {
             soleA.set(Value.kOff);
             soleB.set(Value.kOff);
-        }else{
+        }else
+        {
             soleA.set(Value.kOff);
             soleB.set(Value.kOff);
         }

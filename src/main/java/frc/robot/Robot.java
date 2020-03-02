@@ -50,7 +50,6 @@ public class Robot extends TimedRobot {
   // public static Systems ballIntake = new Systems();
 
   // variables and constants
-  final I2C.Port i2cPort = I2C.Port.kOnboard;
   // private boolean rdIndicator = false;
   int time = 0;
 
@@ -62,7 +61,7 @@ public class Robot extends TimedRobot {
   private static Systems.ColorSys cSys = new Systems.ColorSys();
 
   // color sensing
-  private final ColorSensorV3 m_colorSensor = new ColorSensorV3(i2cPort);
+  private final ColorSensorV3 m_colorSensor = new ColorSensorV3(I2C.Port.kOnboard);
 
   private final ColorMatch m_colorMatcher = new ColorMatch();
   // UwU
@@ -237,6 +236,8 @@ public class Robot extends TimedRobot {
 
   @Override
   public void testPeriodic() {
+    System.out.println(m_colorSensor.getColor());
+    //System.out.println(m_colorSensor.getBlue() ++ m_colorSensor.getGreen() ++ m_colorSensor.getRed(), )
 
     // System.out.println(m_controller.getYChannel());
 

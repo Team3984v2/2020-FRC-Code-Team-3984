@@ -1,8 +1,10 @@
 package frc.robot;
 
 import com.ctre.phoenix.motorcontrol.can.WPI_TalonSRX;
+import com.revrobotics.ColorSensorV3;
 
 import edu.wpi.first.wpilibj.DoubleSolenoid;
+import edu.wpi.first.wpilibj.I2C;
 import edu.wpi.first.wpilibj.GenericHID.Hand;
 import edu.wpi.first.wpilibj.Joystick;
 import edu.wpi.first.wpilibj.Spark;
@@ -10,6 +12,7 @@ import edu.wpi.first.wpilibj.XboxController;
 import edu.wpi.first.wpilibj.drive.DifferentialDrive;
 
 public class Contants {
+
 
      static class IO {
 
@@ -72,6 +75,9 @@ public class Contants {
        //public final Solenoid soleSole = new Solenoid(0);
        public final DoubleSolenoid soleA = new DoubleSolenoid(0,1);
        public final DoubleSolenoid soleB = new DoubleSolenoid(2,3);
+
+       //Color Sensor
+       public final ColorSensorV3 colorsensor = new ColorSensorV3(I2C.Port.kOnboard);
     }
 
 }

@@ -225,12 +225,10 @@ public class Robot extends TimedRobot {
           xboxController.m_drivexbcont, false);
     }
 
-    systems.soleControl(xboxController.m_drivexbcont, objects.soleA, objects.soleB);
+  
+    systems.soloSolControl(xboxController.m_drivexbcont, objects.soleA);
     systems.cannon(xboxController.m_drivexbcont, objects.lBallSpark, objects.rBallSpark, objects.intakeSpark);
-    
-    //systems.solenoidsOut(objects.soleSole, buttonBoard.m_buttonboard);
-    //systems.intake(objects.intakeSpark, objects.lBallSpark, objects.rBallSpark, xboxController.m_drivexbcont);
-    //systems.activate(xboxController.m_drivexbcont, objects.lBallSpark, objects.rBallSpark);
+    System.out.println(m_colorSensor.getColor());
 
   }
 

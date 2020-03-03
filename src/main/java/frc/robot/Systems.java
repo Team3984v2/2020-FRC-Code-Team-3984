@@ -257,6 +257,16 @@ public class Systems
         }
     }
 
+    public void soloSolControl(XboxController x, Solenoid sole){
+        boolean init = false;
+        if ( x.getPOV() == 0){
+            sole.set(true);
+        }if (x.getPOV() == 180) {
+            sole.set(false);
+        }
+        
+    }
+
 
     /**
      * This method enables the "A" and "B" buttons on the Xbox controller to control the solenoids refrenced.
@@ -264,6 +274,7 @@ public class Systems
      * @param x xbox controller
      * @param soleA this is a double solenoid
      * @param soleB this is lso a double solenoid
+     * @deprecated use soloSolControl() instead
      */
     public void soleControl(XboxController x, DoubleSolenoid soleA, DoubleSolenoid soleB){
         if (x.getAButton() == true && x.getBButton() == false) 

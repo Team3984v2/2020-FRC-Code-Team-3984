@@ -18,6 +18,7 @@ import edu.wpi.cscore.VideoMode;
 import edu.wpi.first.cameraserver.CameraServer;
 import edu.wpi.first.wpilibj.I2C;
 import edu.wpi.first.wpilibj.TimedRobot;
+import edu.wpi.first.wpilibj.drive.DifferentialDrive;
 import edu.wpi.first.wpilibj.smartdashboard.SendableChooser;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj.util.Color;
@@ -90,6 +91,8 @@ public class Robot extends TimedRobot {
 
     objects.lMaster.configSelectedFeedbackSensor(FeedbackDevice.QuadEncoder);
     objects.lMaster.setSelectedSensorPosition(0);
+    objects.rMaster.configSelectedFeedbackSensor(FeedbackDevice.QuadEncoder);
+    objects.rMaster.setSelectedSensorPosition(0);
     // objects.rMaster.configSelectedFeedbackSensor(FeedbackDevice.CTRE_MagEncoder_Relative);
     // m_encoder.setDistancePerPulse(1./256.);
 
@@ -99,6 +102,8 @@ public class Robot extends TimedRobot {
     m_colorMatcher.addColorMatch(kYellowTarget);
     objects.rBallSpark.setInverted(true);
     objects.intakeSpark.setInverted(true);
+    objects.lMaster.setInverted(true);
+    objects.lSlave.setInverted(true);
 
   }
 
@@ -170,6 +175,9 @@ public class Robot extends TimedRobot {
     m_autoSelected = m_chooser.getSelected();
     // m_autoSelected = SmartDashboard.getString("Auto Selector", kDefaultAuto);
     System.out.println("Auto selected: " + m_autoSelected);
+    objects.rMaster.setSelectedSensorPosition(0);
+    objects.lMaster.getSelectedSensorPosition(0);
+
   }
 
   /**
@@ -178,22 +186,40 @@ public class Robot extends TimedRobot {
   @Override
   public void autonomousPeriodic() {
 
-    switch (m_autoSelected) {
+    int rEnc = objects.rMaster.getSelectedSensorPosition();
+    int lEnc = objects.lMaster.getSelectedSensorPosition();
+
+    
+    int i = lEnc;
+
+    if(i > -systems.feetToEnc(Math.PI*.5)) {
+      
+    
+    objects.lMaster.set(.3);
+    objects.rMaster.set(.3);
+        
+    }else{
+      objects.lMaster.set(0);
+    objects.rMaster.set(0);
+    }
+    System.out.println(i);
+    System.out.println("r: " + rEnc);
+    System.out.println("l: " +lEnc);
+    if (buttonBoard.m_buttonboard.getRawButtonPressed(7) == true){
+      objects.rMaster.setSelectedSensorPosition(0);
+      objects.lMaster.getSelectedSensorPosition(0);
+
+    }else{
+
+    }
+
+/*switch (m_autoSelected) {
       case kCustomAuto:
         // Put custom auto code here
         break;
       case kDefaultAuto:
-
-      //drive forward straight for 2 seconds    
-      for(int i = 0; i < 2000; i++)
-          {
-              objects.m_autoDrive.tankDrive(1, 1);
-          }
       
-      //turn left
-      for(int i = 0; i < 500; i++)
-      {
-          objects.m_autoDrive.tankDrive(-1,1);
+        
       }
         break;
       case kOption1:
@@ -203,6 +229,8 @@ public class Robot extends TimedRobot {
         // Put default auto code here
 
     }
+    */
+  
   }
 
   /**
@@ -216,19 +244,15 @@ public class Robot extends TimedRobot {
     int gameColor = innerSystems.gameData_Color();
     objects.lMaster.getFaults(faults);
 
-    boolean rdIndicator = buttonBoard.button1();
-    if (rdIndicator == true) {
+
       systems.driveTeleop(objects.rMaster, objects.lMaster, objects.rSlave, objects.lSlave,
-          xboxController.m_drivexbcont, true);
-    } else {
-      systems.driveTeleop(objects.rMaster, objects.lMaster, objects.rSlave, objects.lSlave,
-          xboxController.m_drivexbcont, false);
-    }
+          xboxController.m_drivexbcont, buttonBoard.m_buttonboard);
 
   
     systems.soloSolControl(xboxController.m_drivexbcont, objects.soleA);
     systems.cannon(xboxController.m_drivexbcont, objects.lBallSpark, objects.rBallSpark, objects.intakeSpark);
-    System.out.println(m_colorSensor.getColor());
+    systems.lift(xboxController.m_drivexbcont, objects.lift);
+    System.out.println(m_colorSensor.getRawColor());
 
   }
 

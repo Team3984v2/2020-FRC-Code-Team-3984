@@ -21,6 +21,8 @@ import edu.wpi.first.wpilibj.util.Color;
 public class Systems
 {
 
+    public static Contants constants = new Contants();
+
 
     public void setEncZero(XboxController controller, WPI_TalonSRX talon) 
     {
@@ -60,28 +62,28 @@ public class Systems
             lMaster.configNominalOutputReverse(0);
             lMaster.configPeakOutputForward(1);
             lMaster.configPeakOutputReverse(-1);
-            lMaster.setNeutralMode(NeutralMode.Coast);
+            lMaster.setNeutralMode(NeutralMode.Brake);
         
                 
             lSlave.configNominalOutputForward(0);
             lSlave.configNominalOutputReverse(0);
             lSlave.configPeakOutputForward(1);
             lSlave.configPeakOutputReverse(-1);
-            lSlave.setNeutralMode(NeutralMode.Coast);
+            lSlave.setNeutralMode(NeutralMode.Brake);
         
                 
             rMaster.configNominalOutputForward(0);
             rMaster.configNominalOutputReverse(0);
             rMaster.configPeakOutputForward(1);
             rMaster.configPeakOutputReverse(-1);
-            rMaster.setNeutralMode(NeutralMode.Coast);
+            rMaster.setNeutralMode(NeutralMode.Brake);
         
                 
             rSlave.configNominalOutputForward(0);
             rSlave.configNominalOutputReverse(0);
             rSlave.configPeakOutputForward(1);
             rSlave.configPeakOutputReverse(-1);
-            rSlave.setNeutralMode(NeutralMode.Coast);
+            rSlave.setNeutralMode(NeutralMode.Brake);
         }
         //used to get the color from the game
         public int gameData_Color()
@@ -120,6 +122,15 @@ public class Systems
         
     }
 
+    public double feetToEnc(double ft){
+        double pi = Math.PI;
+
+        double mul = 360 * ft;
+        double hPI = pi * .5;
+        double encC = mul/hPI;
+
+        return encC;
+    }
 
     /**
      * This method, if state == true, will cube the raw value. This is ment to be used for joystick/Trigger
@@ -153,6 +164,21 @@ public class Systems
         }
         
     }
+    public static boolean inv;
+    public static int i2 = 0;
+    public static void toggle(Joystick j){
+        
+        if (j.getRawButtonPressed(7) == true){
+            if (i2 % 2 == 0){
+                inv = true;
+                i2++;
+    
+            }else{
+                inv = false;
+            }
+        }
+
+    }
     /**
      * This Method is used as an arcade dive for four WPI_TalsonSRX Motor controllers. Also inverts the control if needed
      * @param rMaster Right Front Motor
@@ -162,14 +188,14 @@ public class Systems
      * @param teemo Xbox Controller
      * @param inverse If true, the robot orientation is flipped
      */
-    public void driveTeleop(WPI_TalonSRX rMaster, WPI_TalonSRX lMaster, WPI_TalonSRX rSlave, WPI_TalonSRX lSlave, XboxController teemo, boolean inverse) {
-
+    public void driveTeleop(WPI_TalonSRX rMaster, WPI_TalonSRX lMaster, WPI_TalonSRX rSlave, WPI_TalonSRX lSlave, XboxController teemo, Joystick j) {
+        toggle(j);
         double invert = 1;
-        if (inverse == true)
+        if (inv == true)
             invert = invert*-1;
 
-        Double speed = (cubeDrive(deadband(-teemo.getX(Hand.kRight)),true)*invert); 
-        Double turn = (cubeDrive(deadband(teemo.getY(Hand.kLeft)),true)*invert);
+        Double speed = (cubeDrive(deadband(teemo.getY(Hand.kLeft)),true)*invert);
+        Double turn = -(cubeDrive(deadband(teemo.getX(Hand.kRight)),true)*invert); 
        //teemo is the xbox thing, remember :)
         Double left = speed + turn;
         Double right = speed - turn;
@@ -198,31 +224,49 @@ public class Systems
             {
                 l.set(1);
                 r.set(1);
-                b.set(.25);
+                b.set(.5);
             }
-            else
+            else if (x.getBumper(Hand.kRight) == false && (x.getBumper(Hand.kLeft) == false))
             {
                 l.set(1);
                 r.set(1);
                 b.set(0);
+            }else if((x.getBumper(Hand.kLeft) == true)){
+                l.set(1);
+                r.set(1);
+                b.set(-.05);
             }
         }
         else
         {
             if(x.getBumper(Hand.kRight) == true)
             {
-                l.set(0);
-                r.set(0);
-                b.set(.25);
+                l.set(-.35);
+                r.set(-.35);
+                b.set(.5);
             }
-            else
+            else if (x.getBumper(Hand.kRight) == false && x.getBumper(Hand.kLeft) == false)
             {
                 l.set(0);
                 r.set(0);
                 b.set(0);
+            }else if (x.getBumper(Hand.kLeft) == true){
+                l.set(-.1);
+                r.set(-.1);
+                b.set(-.5);
             }
         }
         
+    }
+
+    public void lift(XboxController x, Spark liftMotor){
+        if(x.getBackButton() == true){
+            liftMotor.set(1);
+        }else if (x.getStartButton() == true){
+            liftMotor.set(-1);
+        }else{
+            liftMotor.set(0);
+        }
     }
 
     /**

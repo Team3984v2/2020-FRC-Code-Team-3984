@@ -14,8 +14,15 @@ import edu.wpi.first.wpilibj.drive.DifferentialDrive;
 
 public class Contants {
 
+    public double rCannonSpark = 1;
+    public double lCannonSpark = 1;
+    public double beltSpark = .5;
+    public double lift = 1;   //public double 
+
 
      static class IO {
+
+    
 
          static class XController{
             //Xbox controller
@@ -59,6 +66,8 @@ public class Contants {
     }
 
      static class Objects {
+
+
         
         //Talons
         public  final WPI_TalonSRX lMaster = new WPI_TalonSRX(1);
@@ -66,11 +75,14 @@ public class Contants {
         public  final WPI_TalonSRX rMaster = new WPI_TalonSRX(4);
         public  final WPI_TalonSRX rSlave = new WPI_TalonSRX(3);
         public  final DifferentialDrive m_autoDrive = new DifferentialDrive(lMaster, rMaster);
+
+        DifferentialDrive drive = new DifferentialDrive(lMaster, rMaster);
         //Sparks
         public  final Spark lBallSpark = new Spark(0);  //cannon intake motor 1
         public  final Spark rBallSpark = new Spark(1);  //cannon intake motor 2
         public  final Spark intakeSpark = new Spark(2); //ball intake motor
-        public final Spark cwSpark = new Spark(3);     //color wheel motor
+        public  final Spark cwSpark = new Spark(3);     //color wheel motor
+        public  final Spark lift = new Spark(4);
 
         //Solenoids
        //public final Solenoid soleSole = new Solenoid(0);

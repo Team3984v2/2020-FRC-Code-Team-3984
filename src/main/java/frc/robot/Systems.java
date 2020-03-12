@@ -131,6 +131,17 @@ public class Systems
 
         return encC;
     }
+    
+    public void climb(Spark spark, XboxController x){
+    
+        if (x.getPOV() == 90){
+            spark.set(1);
+        }else if(x.getPOV() == 270){
+            spark.set(-1);
+        }else{
+            spark.set(0);
+        }
+    }
 
     /**
      * This method, if state == true, will cube the raw value. This is ment to be used for joystick/Trigger

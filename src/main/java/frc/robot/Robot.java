@@ -105,6 +105,7 @@ public class Robot extends TimedRobot {
     objects.lMaster.setInverted(true);
     objects.lSlave.setInverted(true);
 
+
   }
 
   /**
@@ -247,6 +248,7 @@ public class Robot extends TimedRobot {
 
       systems.driveTeleop(objects.rMaster, objects.lMaster, objects.rSlave, objects.lSlave,
           xboxController.m_drivexbcont, buttonBoard.m_buttonboard);
+    systems.climb(objects.cwSpark, xboxController.m_drivexbcont);
 
   
     systems.soloSolControl(xboxController.m_drivexbcont, objects.soleA);
